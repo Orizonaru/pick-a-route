@@ -1,16 +1,18 @@
-from app import app
 from flask import Flask, render_template, jsonify, request, current_app
 import logging
 import requests
 from app.request_weather import RequestWeather
+
+app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 api_key = 'qiLNhPlYwsQwGIOAdSB8XbXOD1m1tQGE'
 
+
 @app.route('/')
-def index():
+def run():
     return render_template('index.html')
 
 
@@ -65,8 +67,8 @@ def get_multiple_weather():
             "temp_max": forecast["temp_max"],
             "temp_min": forecast["temp_min"],
             "wind_speed": forecast["wind_speed"],
-            "rain_probability": forecast["rain_probability"],
-            "is_good": weather_validation(forecast["temp_max"], forecast["temp_min"], forecast["wind_speed"], forecast["rain_probability"])
+            "rain_probability": forecast["rain_prob"],
+            "is_good": weather_validation(forecast["temp_max"], forecast["temp_min"], forecast["wind_speed"], forecast["rain_prob"])
         }
 
     start_city_data = get_city_weather(start_city)

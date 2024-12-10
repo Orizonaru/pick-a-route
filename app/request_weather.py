@@ -1,5 +1,5 @@
 from typing import List, Dict, Union
-from default_requests_processing import DefaultRequestsProcessing
+from app.default_requests_processing import DefaultRequestsProcessing
 
 class RequestWeather(DefaultRequestsProcessing):
     possible_forecast_days = {1, 5, 10, 15}
@@ -41,10 +41,10 @@ class RequestWeather(DefaultRequestsProcessing):
         for daily_forecast in response.get("DailyForecasts", []):
             day_info = {
                 "date": daily_forecast["Date"],
-                "max_temperature": daily_forecast["Temperature"]["Maximum"]["Value"],
-                "min_temperature": daily_forecast["Temperature"]["Minimum"]["Value"],
+                "temp_max": daily_forecast["Temperature"]["Maximum"]["Value"],
+                "temp_min": daily_forecast["Temperature"]["Minimum"]["Value"],
                 "wind_speed": daily_forecast["Day"]["Wind"]["Speed"]["Value"],
-                "rain_chance": daily_forecast["Day"]["PrecipitationProbability"],
+                "rain_prob": daily_forecast["Day"]["PrecipitationProbability"],
             }
             daily_forecast_data = [day_info]
 

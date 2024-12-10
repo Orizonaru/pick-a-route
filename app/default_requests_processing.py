@@ -10,11 +10,11 @@ class DefaultRequestsProcessing:
         self.http_session = requests.Session()
         self.request_timeout = request_timeout
 
-    def _construct_url(self, resource):
-        return f"{self.api_url}/{resource}"
+    def _construct_url(self, endpoint):
+        return f"{self.api_url}/{endpoint}"
 
-    def fetch(self, resource, query_params=None, request_headers=None):
-        full_url = self._construct_url(resource)
+    def fetch(self, endpoint, query_params=None, request_headers=None):
+        full_url = self._construct_url(endpoint)
         log.info(f"Отправка GET-запроса на {full_url} с параметрами: {query_params} и заголовками: {request_headers}")
         try:
             response = self.http_session.get(full_url, params=query_params, headers=request_headers, timeout=self.request_timeout)
