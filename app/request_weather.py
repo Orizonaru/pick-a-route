@@ -4,22 +4,22 @@ from default_requests_processing import DefaultRequestsProcessing
 class RequestWeather(DefaultRequestsProcessing):
     possible_forecast_days = {1, 5, 10, 15}
 
-    def __init__(self, api_token: str, language: str):
+    def __init__(self, api_key: str, language: str):
         super().__init__(api_url="http://dataservice.accuweather.com")
-        self.api_token = api_token
+        self.api_key = api_key
         self.language = language
 
     def fetch_city_autocomplete(self, city_name: str) -> List[Dict]:
         query_params = {
             "q": city_name,
             "language": self.language,
-            "apikey": self.api_token
+            "apikey": self.api_key
         }
         response = self.fetch(endpoint="locations/v1/cities/autocomplete", query_params=query_params)
         return response
 
     def fetch_daily_forecast(
-        self, forecast_days: int, location_id: str, include_details: bool = True, use_metric: bool = True
+        self, forecast_days: int, location_code: str, include_details: bool = True, use_metric: bool = True
     ) -> Union[Dict, None]:
 
         if forecast_days not in self.possible_forecast_days:
@@ -32,10 +32,10 @@ class RequestWeather(DefaultRequestsProcessing):
             "language": self.language,
             "details": include_details,
             "metric": use_metric,
-            "apikey": self.api_token
+            "apikey": self.api_key
         }
 
-        endpoint = f"forecasts/v1/daily/{forecast_days}day/{location_id}"
+        endpoint = f"forecasts/v1/daily/{forecast_days}day/{location_code}"
         response = self.fetch(endpoint=endpoint, query_params=query_params)
 
         for daily_forecast in response.get("DailyForecasts", []):
